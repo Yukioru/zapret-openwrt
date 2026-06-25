@@ -415,6 +415,18 @@ return view.extend({
             rows: 15,
         }).show();
 
+        o = s.taboption(tabname, form.Button, '_all_ip_filter_btn', _('All IP entries'));
+        o.inputtitle = _('Edit');
+        o.inputstyle = 'edit btn';
+        o.description = tools.iplstAllFN;
+        o.onclick = () => new tools.fileEditDialog({
+            file: tools.iplstAllFN,
+            title: _('All IP filter'),
+            desc: _('Patterns can be strings or regular expressions. Each pattern in a separate line<br />Examples:'),
+            aux: '<code>128.199.0.0/16<br />34.217.90.52<br />162.13.190.77</code>',
+            rows: 15,
+        }).show();
+
         o = s.taboption(tabname, form.Button, '_user_ip_filter_btn', _('User IP entries'));
         o.inputtitle = _('Edit');
         o.inputstyle = 'edit btn';

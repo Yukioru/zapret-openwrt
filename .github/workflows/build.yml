@@ -38,8 +38,8 @@ env:
   MAX_SPEED: ${{ github.event.inputs.max_speed != 'false' }}
   TAG_SUFFIX: ${{ github.event.inputs.fake_build == 'true' && '-fake' || github.event.inputs.test_build == 'true' && '-test' || '' }}
   REPO_NAME: zapret-openwrt
-  REPO_URL: https://github.com/remittor/zapret-openwrt
-  REPO_LNK: remittor/zapret-openwrt
+  REPO_URL: https://github.com/yukioru/zapret-openwrt
+  REPO_LNK: yukioru/zapret-openwrt
   REPO_BRANCH: master
   PKGDIR: ${{ github.workspace }}/zapret-openwrt
   SDKDIR: /builder
@@ -115,8 +115,8 @@ jobs:
     steps:
       - id: set
         run: |
-          echo "IPK_BRANCH=v24.10.5" >> "$GITHUB_OUTPUT"
-          echo "APK_BRANCH=v25.12.0" >> "$GITHUB_OUTPUT"
+          echo "IPK_BRANCH=v24.10.7" >> "$GITHUB_OUTPUT"
+          echo "APK_BRANCH=v25.12.2" >> "$GITHUB_OUTPUT"
           echo "XXX_BRANCH=SNAPSHOT" >> "$GITHUB_OUTPUT"
 
   build:
@@ -346,7 +346,7 @@ jobs:
 
       - name: Upload packages
         if: steps.install.outcome == 'success'
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           path: ${{ env.OUTDIR }}
           name: zapret,${{ env.PKGTYPE }},${{ matrix.arch }}

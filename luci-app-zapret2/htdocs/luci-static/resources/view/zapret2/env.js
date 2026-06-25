@@ -16,6 +16,7 @@ return baseclass.extend({
     hostsUserExcludeFN: '/opt/zapret2/ipset/zapret-hosts-user-exclude.txt',
     iplstExcludeFN    : '/opt/zapret2/ipset/zapret-ip-exclude.txt',
     iplstUserFN       : '/opt/zapret2/ipset/zapret-ip-user.txt',
+    iplstAllFN        : '/opt/zapret2/ipset/zapret-ip-all.txt',
     iplstUserExcludeFN: '/opt/zapret2/ipset/zapret-ip-user-exclude.txt',
     custFileMax       : 4,
     custFileTemplate  : '/opt/zapret2/ipset/cust%s.txt',
@@ -26,7 +27,7 @@ return baseclass.extend({
                           'https://github.com/bol-van/zapret2/blob/master/init.d/custom.d.examples.linux/50-stun4all',
                           'https://github.com/bol-van/zapret2/tree/master/init.d/custom.d.examples.linux'
                         ],
-    nfqws_opt_url     : 'https://github.com/remittor/zapret-openwrt/discussions/',
+    nfqws_opt_url     : 'https://github.com/yukioru/zapret-openwrt/discussions/',
 
     autoHostListFN    : '/opt/zapret2/ipset/zapret-hosts-auto.txt',
     autoHostListDbgFN : '/opt/zapret2/ipset/zapret-hosts-auto-debug.log',
