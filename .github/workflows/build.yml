@@ -349,7 +349,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: ${{ env.OUTDIR }}
-          name: zapret,${{ env.PKGTYPE }},${{ matrix.arch }}
+          name: zapret2,${{ env.PKGTYPE }},${{ matrix.arch }}
           if-no-files-found: error
 
       - name: Upload build logs
@@ -368,7 +368,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: zapret,*
+          pattern: zapret2,*
 
       - name: Put packages into zip
         env:
@@ -381,12 +381,12 @@ jobs:
           ls -la
           echo "------------- DIR END -------------------"
           mkdir -p sorted
-          find . -maxdepth 1 -type d -name "zapret,ipk,*" -exec sh -c 'mkdir -p sorted/$(basename "{}" | cut -d, -f3)' \;
-          find . -maxdepth 1 -type d -name "zapret,apk,*" -exec sh -c 'mkdir -p sorted/$(basename "{}" | cut -d, -f3)/apk' \;
-          find . -maxdepth 1 -type d -name "zapret,ipk,*" -exec sh -c 'cp -R "{}/." sorted/$(basename "{}" | cut -d, -f3)' \;
-          find . -maxdepth 1 -type d -name "zapret,apk,*" -exec sh -c 'cp -R "{}/." sorted/$(basename "{}" | cut -d, -f3)/apk' \;
-          LUCI_IPK=$( find . -type f -path "*/zapret,ipk,*/luci-app-zapret*.ipk" -print | head -n 1 )
-          LUCI_APK=$( find . -type f -path "*/zapret,apk,*/luci-app-zapret*.apk" -print | head -n 1 )
+          find . -maxdepth 1 -type d -name "zapret2,ipk,*" -exec sh -c 'mkdir -p sorted/$(basename "{}" | cut -d, -f3)' \;
+          find . -maxdepth 1 -type d -name "zapret2,apk,*" -exec sh -c 'mkdir -p sorted/$(basename "{}" | cut -d, -f3)/apk' \;
+          find . -maxdepth 1 -type d -name "zapret2,ipk,*" -exec sh -c 'cp -R "{}/." sorted/$(basename "{}" | cut -d, -f3)' \;
+          find . -maxdepth 1 -type d -name "zapret2,apk,*" -exec sh -c 'cp -R "{}/." sorted/$(basename "{}" | cut -d, -f3)/apk' \;
+          LUCI_IPK=$( find . -type f -path "*/zapret2,ipk,*/luci-app-zapret2*.ipk" -print | head -n 1 )
+          LUCI_APK=$( find . -type f -path "*/zapret2,apk,*/luci-app-zapret2*.apk" -print | head -n 1 )
           find ./sorted -mindepth 1 -maxdepth 1 -type d -exec cp -f "$LUCI_IPK" "{}/" \;
           find ./sorted -mindepth 2 -maxdepth 2 -type d -name "apk" -exec cp -f "$LUCI_APK" "{}/" \;
           mkdir -p public

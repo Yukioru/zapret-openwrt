@@ -20,9 +20,9 @@ while getopts "cu:pft:" opt; do
 done
 
 if [ "$EXE_DIR" = "/tmp" ]; then
-	ZAPRET_CFG_NAME="zapret"
+	ZAPRET_CFG_NAME="zapret2"
 	if [ "$opt_update" = "1" ]; then
-		ZAPRET_CFG_NAME="zapret"
+		ZAPRET_CFG_NAME="zapret2"
 		opt_update="@"
 		opt_forced="true"
 	fi
@@ -53,11 +53,11 @@ fi
 
 ZAP_CPU_ARCH="$DISTRIB_ARCH"
 
-if [ $ZAPRET_CFG_NAME = "zapret" ]; then
-	ZAP_REL_URL="https://raw.githubusercontent.com/yukioru/zapret-openwrt/gh-pages/releases/releases_zap1_$ZAP_CPU_ARCH.json"
-fi
 if [ $ZAPRET_CFG_NAME = "zapret2" ]; then
 	ZAP_REL_URL="https://raw.githubusercontent.com/yukioru/zapret-openwrt/gh-pages/releases/releases_zap2_$ZAP_CPU_ARCH.json"
+else
+	echo "ERROR: Unsupported package branch: $ZAPRET_CFG_NAME"
+	return 1
 fi
 CURL_TIMEOUT=5
 CURL_HEADER1="Accept: application/json"

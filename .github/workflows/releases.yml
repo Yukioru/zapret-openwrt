@@ -127,15 +127,6 @@ jobs:
               };
             sort_by(.created_at) | reverse
             | {
-                zap1: (
-                  map(select(.draft == false))
-                  | map(select(.name | startswith("zapret ")))
-                  | .[0:20]
-                  | {
-                      generated_at: (now | todate),
-                      releases: map(normalize_release)
-                    }
-                ),
                 zap2: (
                   map(select(.draft == false))
                   | map(select(.name | startswith("zapret2 ")))
@@ -148,40 +139,31 @@ jobs:
               }
           ' \
           | tee \
-            >(jq '.zap1' > releases_zap1.json) \
             >(jq '.zap2' > releases_zap2.json)
 
       - name: Generate releases_BRANCH_ARCH.json
         run: |
-          BRANCHES=("zap1" "zap2")
           for ARCH in $(jq -r '.[] | .assets[].name | capture("^[^_]+_[^_]+_(?<arch>.+)\\.zip$").arch' releases.json | sort -u); do
-            for BRANCH in "${BRANCHES[@]}"; do
-              if [ "$BRANCH" == "zap1" ]; then
-                PREFIX="zapret "
-              else
-                PREFIX="zapret2 "
-              fi
-              jq --arg prefix "$PREFIX" --arg arch "$ARCH" '
-                sort_by(.created_at) | reverse
-                | map(select(.draft == false))
-                | map(select(.name | startswith($prefix)))
-                | .[0:20]
-                | map(
-                    . as $release
-                    | {
-                        tag: $release.tag_name,
-                        name: $release.name,
-                        prerelease: $release.prerelease,
-                        created_at: $release.created_at,
-                        updated_at: $release.updated_at,
-                        published_at: $release.published_at,
-                        url: $release.html_url,
-                        assets: ($release.assets | map(select(.name | test("_\($arch)\\.zip$"))))
-                      }
-                  )
-                | { generated_at: (now | todate), releases: . }
-              ' releases.json > "releases_${BRANCH}_${ARCH}.json"
-            done
+            jq --arg arch "$ARCH" '
+              sort_by(.created_at) | reverse
+              | map(select(.draft == false))
+              | map(select(.name | startswith("zapret2 ")))
+              | .[0:20]
+              | map(
+                  . as $release
+                  | {
+                      tag: $release.tag_name,
+                      name: $release.name,
+                      prerelease: $release.prerelease,
+                      created_at: $release.created_at,
+                      updated_at: $release.updated_at,
+                      published_at: $release.published_at,
+                      url: $release.html_url,
+                      assets: ($release.assets | map(select(.name | test("_\($arch)\\.zip$"))))
+                    }
+                )
+              | { generated_at: (now | todate), releases: . }
+            ' releases.json > "releases_zap2_${ARCH}.json"
           done
 
       - name: Commit and push ALL releases.json
